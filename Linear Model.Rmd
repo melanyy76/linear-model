@@ -1,0 +1,94 @@
+---
+title: "Linear model"
+author: "Melany Vasquez"
+date: "7/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tigerstats)
+library(tidyverse)
+data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_strength/data.txt",sep="",header=TRUE)  
+```
+
+
+## Introduction
+
+Read abut the data from the website and its stage. Then form three regression models: Model 01 is SIMS~ARM, Model 02 is SIMS~GRIP, and Model 03 is SIMS~ARM+GRIP. For each model find a 95%prediction interval of SIMS given a value of 94 for GRIP and 88 for ARM. compare model 01 and model 03 using anova. writ it up in a markdown document, push the project up to your github account and submit on canvas.
+
+You can import data directly from a link to its website. copy and pasting the link to the clipboard by right clicking.
+
+
+## Methods
+
+This project required a github account repo to be created from scratch. The project needed to be written and the data needed to be read in via SVS file. The helper file needed for this project is Numerical_Numerical. The four variable that are displayed in the environment pane are all numerical variables.
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+###Plot scatterplot
+
+```{r}
+plot(SIMS~ARM,data=data)
+```
+
+##Now with ggplot - first select the basic data
+
+```{r}
+basicNN <- ggplot(data,aes(y=SIMS,x=ARM))
+```
+##Now add in scatterplot
+
+```{r}
+basicNN + geom_point()
+```
+  
+
+
+The Y-axis is SIMS and the x-axis is ARM. This plot shows that there is a positive linear correlation.
+
+# Numerical results
+
+```{r}
+cor(SIMS~ARM,data=data)
+```
+
+The value is 0.68, which is a positive number that indicates the line will go travel upward towards the right.
+
+
+# Inferential  (Build linear model)
+  
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+summary.lm(model.1)
+```
+
+The equation for the line that fits this is SIMS ids equal to -4.1 + .05R * ARM
+The formula needed is y = mx + b to create a line. The adjusted R-squared is the number to look at
+
+# now add the model fit to our plot
+  
+```{r}
+basicNN + geom_point() + geom_smooth(method=lm)
+``` 
+
+
+
+
+
+
+The equation formula for a line is y=mx+b. This regression line that has been drawn used this formula. The equation for SIMS explained by this line is: SIMS = -4.1 + 0.5 * ARM.
+
+To find the value of SIMS multiply the intercept, -4.095160 and the ARM value, 0.054563.
+
+Multiply 100 by ARM, 0.054563 which equals 5.45. The, add the intercept which is about -4.1.
+
+To figure out what value on the Y-intercept passes over the 100 on the X-axis, refer to the values included. It looks like the value of the Y-intercept would be around 1.25, give or take a few.
+
+
