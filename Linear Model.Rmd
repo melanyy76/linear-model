@@ -2,7 +2,11 @@
 title: "Linear model"
 author: "Melany Vasquez"
 date: "7/10/2021"
-output: html_document
+output: 
+  html_document:
+    toc: true
+  toc_depth: 4
+    
 ---
 
 ```{r setup, include=FALSE}
@@ -15,25 +19,28 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 
 ## Introduction
 
-Read abut the data from the website and its stage. Then form three regression models: Model 01 is SIMS~ARM, Model 02 is SIMS~GRIP, and Model 03 is SIMS~ARM+GRIP. For each model find a 95%prediction interval of SIMS given a value of 94 for GRIP and 88 for ARM. compare model 01 and model 03 using anova. writ it up in a markdown document, push the project up to your github account and submit on canvas.
+Read abut the data from the website and its stage. Then form three regression models: Model 01 is SIMS~ARM, Model 02 is SIMS~GRIP, and Model 03 is SIMS~ARM+GRIP. For each model find a 95%prediction interval of SIMS given a value of 94 for GRIP and 88 for ARM. compare model 01 and model 03 using anova. write it up in a markdown document, push the project up to your github account and submit on canvas.
 
 You can import data directly from a link to its website. copy and pasting the link to the clipboard by right clicking.
 
 
-## Methods
+# SIMS~ARM
 
-This project required a github account repo to be created from scratch. The project needed to be written and the data needed to be read in via SVS file. The helper file needed for this project is Numerical_Numerical. The four variable that are displayed in the environment pane are all numerical variables.
 
-# Results
 
-# Graphical Descriptive results 
 
-##Now with ggplot - first select the basic data
+
+
+
+### Graphical Descriptive results 
+
+plot scatterplot 
+
 
 ```{r}
 basicNN <- ggplot(data,aes(y=SIMS,x=ARM))
 ```
-##Now add in scatterplot
+#### Basic scatterplot
 
 ```{r}
 basicNN + geom_point()
@@ -42,7 +49,7 @@ basicNN + geom_point()
 The y-axis is SIMS and the X-axis is ARM. This plot shows that there is a positive linear correlation.There is a Positive correlation between ARM and SIMS displayed in the plot above.
 
 
-# Numerical results
+### Numerical results
 
 ```{r}
 cor(SIMS~ARM,data=data)
@@ -51,13 +58,14 @@ cor(SIMS~ARM,data=data)
 The value is 0.68, which is a positive number that indicates the line will go travel upward towards the right.
 
 
-# Inferential  (Build linear model)
+### Inferential Results
   
 ```{r}
 model.1 <- lm(SIMS~ARM,data=data)
 summary.lm(model.1)
 ```
 
+If you go 1.22 up or down that is the prediction interval
 
 The residual standard error represents the standard deviation of the error points 
 In this linear regression model, the numbers that should be considered to create the prediction equation are the estimate coefficients. To predict SIMS based on ARM strength, the intercept, -4.1 would be added to .05, ARM and then multiplied by ARM.
@@ -70,7 +78,7 @@ The line is to be estimate where it hits the y-axis.Data will change the degree 
 
 
 
-# now add the model (Blue line) fit to our plot
+#### the model (Blue line) fit to our plot added
   
 ```{r}
 basicNN + geom_point() + geom_smooth(method=lm)
@@ -94,11 +102,100 @@ To figure out what value on the Y-intercept passes over the 100 on the X-axis, r
 
 ```{r}
 newdata = data.frame(GRIP=94, ARM = 88)
-predict(model.1, newdata, interval = "prediction")
+predict(model.1, newdata, interval = "prediction", level = .99)
 ```
 
-This is a prediction interval. How far does one point vary from the 
-other 
+This is a prediction interval. How far does one point vary from the other.
+If you take .7 away from 3.13, you would end up approximately 2.3.
+
+
+
+
+
+# SIMS~GRIP
+
+### Graphical Descriptive results 
+
+plot scatterplot 
+
+```{r}
+basicNN <- ggplot(data,aes(y=SIMS,x=GRIP))
+```
+#### Basic scatterplot
+
+```{r}
+basicNN + geom_point()
+```
+
+The points in this plot are more closely knit.
+
+
+
+### Numerical results
+
+```{r}
+cor(SIMS~GRIP,data=data)
+```
+
+The correlation is 0.63. The number of the correlation , the closer the point are to eachotjer. This correlation is a bit smaller than the previous correlation in model 01 between the ARM.
+
+### Inferential Results
+  
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+summary.lm(model.2)
+```
+
+The adjusted R-square is 0.4053.previously, the number was 0.409
+The small standard error makes for a successful model.This model is not as good as the model 01 with ARM because the standard deviation is larger.Notice the difference between the multiple R-squared and the adjusted R-squared.
+
+
+
+#### the model (Blue line) 
+  
+```{r}
+basicNN + geom_point() + geom_smooth(method=lm)
+``` 
+
+
+
+# SIMS~ARM + GRIP
+
+
+### Graphical Descriptive results 
+
+plot scatterplot 
+
+```{r}
+basicNN <- ggplot(data,aes(y=SIMS,x=ARM+GRIP))
+```
+#### Basic scatterplot
+
+```{r}
+basicNN + geom_point()
+```
+
+
+
+### Numerical results
+
+```{r}
+cor(SIMS~ARM+GRIP,data=data)
+```
+
+
+
+
+
+### Inferential Results
+  
+```{r}
+model.3 <- lm(SIMS~ARM+GRIP,data=data)
+summary.lm(model.3)
+```
+
+
+
 
 
 # Discussion and conclusion 
