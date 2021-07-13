@@ -111,6 +111,10 @@ If you take .7 away from 3.13, you would end up approximately 2.3.
 
 
 
+
+
+
+
 # SIMS~GRIP
 
 ### Graphical Descriptive results 
@@ -155,6 +159,12 @@ The small standard error makes for a successful model.This model is not as good 
 ```{r}
 basicNN + geom_point() + geom_smooth(method=lm)
 ``` 
+
+
+
+
+
+
 
 
 
