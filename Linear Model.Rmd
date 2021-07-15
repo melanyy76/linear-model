@@ -160,25 +160,35 @@ The small standard error makes for a successful model.This model is not as good 
 ```{r}
 basicNN + geom_point() + geom_smooth(method=lm)
 ``` 
-
 Again every dot or point displayed in this plot is an error.Take the distance between each point and square it.The sum of all squared errors is the average mean error.Take the value of the average away from every dot, and then add that up.
+The equation formula for a line is y=mx+b. This regression line that has been drawn used this formula. The equation for SIMS explained by this line is: SIMS = -3.10 + 2.0 * GRIP
 
+To figure out what value on the Y-intercept passes over the 100 on the X-axis, refer to the values included. It looks like the value of the Y-intercept would be around 1.25, give or take a few.
 
 
 ```{r}
 predict(model.2, newdata, interval = "prediction")
+predict(model.2, newdata, interval = "confidence")
 ```
 
 
+The first line is the prediction interval, the second line is the confidence interval. 
+The prediction interval is predicting where the next point will be placed.
+The confidence interval is a prediction of where the line will be place, in range from -8 to -0.27
 
-
-
+The uper and lower predictions represent the threshhold.
+The prediction interval says that were 95% confident that the prediction using this model is within these bounds.
 
 
 
 # SIMS~ARM + GRIP
 
 
+### Numerical results (cor)
+
+```{r}
+cor(SIMS~ARM+GRIP,data=data)
+```
 
 
 
@@ -203,29 +213,100 @@ predict(model.3, newdata, interval = "prediction")
 ```
 
 
+### Inferential (Build 2-dimensional model.3)
 
+
+
+
+
+```{r}
+model.3 <- lm(SIMS~GRIP + ARM ,data=data)
+summary.lm(model.3)
+```
+
+
+
+#### predict model.3 at target point
+
+```{r}
+predict(model.3, newdata, interval = "prediction")
+```
+
+
+## comparing nested models ANOVA test
+
+### Model.01 vs Model,03
+
+Model 1 and Model 3 are nested
+
+```{r}
+anova(model.1,model.3)
+```
+
+The p-value is 0.00000499. The results are unlikely to occur by chance.
+null hypothesis is rejected in favor of the alternative.
+The residual degree of freedom is 145. All the errors together add up to 217.The errors were reduced by 29.45.
+
+### Model.2 vs. Model 03
+
+```{r}
+anova(model.2,model.3)
+```
+
+The p-value is based on on the results of 0.000000001495. These results are unliekly to occur by chance. 
+
+Model 2 is nested in model 3. The components in model 2 are in 3.
+
+## Informally compare Model.1 with Model.2
+
+
+```{r}
+anova(model.1,model.2)
+```
+
+0.467 is the adjusted R-squared for SIMS~ARM
+
+0.4053 is the adjusted R-squared fro SIMS~GRIP
+  
+How much the models are able to guess the average.
 
 # Model comparisson
 
 
-The models must be nested. That means all the independent variable in one model are also included in all the other models. SIMS is a function of ARM. Model 2 is nested in model 3, and Model 1 in model 3. odel 1 and 2 are nested into model 3 and models 1 and 2 are not.
+The models must be nested. That means all the independent variable in one model are also included in all the other models. SIMS is a function of ARM. Model 2 is nested in model 03, and Model 01 in model 03. model 01 and 02 are nested into model 03 and models 01 and 02 are not.
 
 
 ## Asessing SIM~ARM (how good it is)
+
+According to inferential results declared in each model (Model 01,Model 02, and Model p3. The adjusted R-square is what 
+tells me and lets me know which models are the ones that work best. SIM~ARM which was Model 01, accordingly the degrees of
+freedom taken away from the Multiple -R squared and then what was left is the Adjusted R-squared. In the adjusted R 
+square, the error was reduced by 46% (0.467).he adjusted R-squared represents is the reduction of the error from the mean 
+model on a percentage basis. Meaning There was not much in this model (01) to see, there was a positive outcome like the 
+rest however,it was still not the best out of all three models as many errors there were.  
 
 
 
 ### Comparing SIMS~ARM to SIM~GRIP
 
+The main idea here is to tell which of the three models is the best sculpted and the highest number each gets inferantially in the R-square the better it is placed.
+
+SIMS~ARM like previously stated, it did have many errors and it was positively running in the R-square. However, they are not compatible against each other. For starters they have no similar components and the r-square in the inferential results implied that model 02, which is SIMS~GRIP is way better made with mistakes rather than model 01 which is SIMS~ARM.
 
 
-### Comparing SIMS~ARM to SIMS~ ARM+GRIP 
+### Comparing SIMS~ARM to SIMS~ARM+GRIP 
+
+SIMS~ARM was trash compared to SIMS~ARM +GRIP. SIMS~ARM+GRIP was the best model with the R-square of 0.5, meaning there were all the more errors. But overall model 01 (SIMS~ARM) is able to nest into Model 03 (SIMS~ARM+GRIP). Model 03 had a the requirements and the highest number and amounts of errors that model 01 ( SIMS~ARM) did not have and only had about 0.467 which was not much maybe 40% and Model 03 had 2xs as much. And what we wanted for results was MORE errors so that there would be a more perfect design in the models showed above.
 
 #### Statistical test of SIMS~ARM | SIMS~ARM+GRIP
 
 
+SIMS~ARM and SIMS~ARM+GRIP were not identical at all. Therefore. The best model is model 03 SIMS~ ARM+GRIP, that being because the adjusted R-square was at .53. thi means that the most errors were removed on here ratherin the other two models the models were all about .4.
+The second best model was model 02 SIMS~GRIP , becasue its adjusted R-square landed around .4053, it was closest to the .5/model 03 and 40% of the errors that were made were reduced. 
+The most useless model of all three was Model 01, SIMS~ARM although it can synch/ "nest" into model 03. It had awfully many error and was also the least effective to create less errors. The adjusted R-square of this model was only .467, which was a fail.
 
 
-
+One thing that we can confirm though is the fact that Models 01 and 02 can nest or fixate into model 03 pretty well since  models have components that match model 03.
+however models 01 and 02 cannot nest together. 
 
 
