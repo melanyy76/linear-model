@@ -5,7 +5,7 @@ date: "7/10/2021"
 output: 
   html_document:
     toc: true
-    number_section: true
+    toc_depth: 5
 ---
 
 ```{r setup, include=FALSE}
@@ -31,7 +31,6 @@ You can import data directly from a link to its website. copy and pasting the li
 
 
 
-### Graphical Descriptive results 
 
 plot scatterplot 
 
@@ -48,7 +47,7 @@ basicNN + geom_point()
 The y-axis is SIMS and the X-axis is ARM. This plot shows that there is a positive linear correlation.There is a Positive correlation between ARM and SIMS displayed in the plot above.
 
 
-### Numerical results
+#### Numerical results
 
 ```{r}
 cor(SIMS~ARM,data=data)
@@ -57,12 +56,14 @@ cor(SIMS~ARM,data=data)
 The value is 0.68, which is a positive number that indicates the line will go travel upward towards the right.
 
 
-### Inferential Results
+#### Inferential Results
   
 ```{r}
 model.1 <- lm(SIMS~ARM,data=data)
 summary.lm(model.1)
 ```
+
+This model is better than the one for GRIP. The Adjusted R-squaredis bigger, which means more errors were made.
 
 If you go 1.22 up or down that is the prediction interval
 
@@ -77,7 +78,7 @@ The line is to be estimate where it hits the y-axis.Data will change the degree 
 
 
 
-#### the model (Blue line) fit to our plot added
+#### the model (Blue line)
   
 ```{r}
 basicNN + geom_point() + geom_smooth(method=lm)
@@ -101,11 +102,11 @@ To figure out what value on the Y-intercept passes over the 100 on the X-axis, r
 
 ```{r}
 newdata = data.frame(GRIP=94, ARM = 88)
-predict(model.1, newdata, interval = "prediction", level = .99)
+predict(model.1, newdata, interval = "prediction")
 ```
 
-This is a prediction interval. How far does one point vary from the other.
-If you take .7 away from 3.13, you would end up approximately 2.3.
+This is a prediction interval. How far does one point vary from the other.If you take .7 away from 3.13, you would end up approximately 2.3.
+The model predictedd a SIMS score of .706, where the 95% confidence interval -1.726 to 3.139
 
 
 
@@ -117,7 +118,7 @@ If you take .7 away from 3.13, you would end up approximately 2.3.
 
 # SIMS~GRIP
 
-### Graphical Descriptive results 
+
 
 plot scatterplot 
 
@@ -134,7 +135,7 @@ The points in this plot are more closely knit.
 
 
 
-### Numerical results
+#### Numerical results
 
 ```{r}
 cor(SIMS~GRIP,data=data)
@@ -142,7 +143,7 @@ cor(SIMS~GRIP,data=data)
 
 The correlation is 0.63. The number of the correlation , the closer the point are to eachotjer. This correlation is a bit smaller than the previous correlation in model 01 between the ARM.
 
-### Inferential Results
+#### Inferential Results
   
 ```{r}
 model.2 <- lm(SIMS~GRIP,data=data)
@@ -160,6 +161,13 @@ The small standard error makes for a successful model.This model is not as good 
 basicNN + geom_point() + geom_smooth(method=lm)
 ``` 
 
+Again every dot or point displayed in this plot is an error.Take the distance between each point and square it.The sum of all squared errors is the average mean error.Take the value of the average away from every dot, and then add that up.
+
+
+
+```{r}
+predict(model.2, newdata, interval = "prediction")
+```
 
 
 
@@ -171,43 +179,50 @@ basicNN + geom_point() + geom_smooth(method=lm)
 # SIMS~ARM + GRIP
 
 
-### Graphical Descriptive results 
-
-plot scatterplot 
-
-```{r}
-basicNN <- ggplot(data,aes(y=SIMS,x=ARM+GRIP))
-```
-#### Basic scatterplot
-
-```{r}
-basicNN + geom_point()
-```
 
 
 
-### Numerical results
-
-```{r}
-cor(SIMS~ARM+GRIP,data=data)
-```
-
-
-
-
-
-### Inferential Results
+#### Inferential Results
   
 ```{r}
 model.3 <- lm(SIMS~ARM+GRIP,data=data)
 summary.lm(model.3)
 ```
 
+GRIP * .024470 + ARM * .037 = SIMS 
+
+The residual standard error is the variation in all points.
+The bigger the Adjusted R square the better the model.The multiple R-squarews is always a little bit bigger than the adjusted R-square.The bigger the adjusted R square the more you reduce the error.
 
 
 
 
-# Discussion and conclusion 
+
+```{r}
+predict(model.3, newdata, interval = "prediction")
+```
+
+
+
+
+# Model comparisson
+
+
+The models must be nested. That means all the independent variable in one model are also included in all the other models. SIMS is a function of ARM. Model 2 is nested in model 3, and Model 1 in model 3. odel 1 and 2 are nested into model 3 and models 1 and 2 are not.
+
+
+## Asessing SIM~ARM (how good it is)
+
+
+
+### Comparing SIMS~ARM to SIM~GRIP
+
+
+
+### Comparing SIMS~ARM to SIMS~ ARM+GRIP 
+
+#### Statistical test of SIMS~ARM | SIMS~ARM+GRIP
+
 
 
 
